@@ -128,7 +128,7 @@
   }
 
   .document-card {
-    @apply medical-card p-4 hover:border-primary/20 group cursor-pointer;
+    @apply medical-card p-4 hover:border-primary/20 cursor-pointer;
   }
 
   .fade-in {

@@ -42,7 +42,7 @@ const getTypeColor = (type: DocumentCardProps["type"]) => {
 export const DocumentCard = ({ title, doctor, date, type, onClick }: DocumentCardProps) => {
   return (
     <div 
-      className="document-card animate-fade-in cursor-pointer"
+      className="document-card animate-fade-in cursor-pointer group"
       onClick={onClick}
     >
       <div className="flex items-start gap-4">
