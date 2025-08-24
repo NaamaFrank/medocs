@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { DocumentCard } from "./DocumentCard";
 import { UploadButton } from "./UploadButton";
+import { ChatButton } from "./ChatButton";
+import { Chat } from "./Chat";
+import { UploadProgress } from "./UploadProgress";
 import { Search, Filter, Calendar } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -38,14 +41,50 @@ const mockDocuments = [
 
 export const Dashboard = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [isChatOpen, setIsChatOpen] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState({
+    isVisible: false,
+    progress: 0,
+    status: 'uploading' as 'uploading' | 'processing' | 'complete' | 'error',
+    fileName: ''
+  });
   const { toast } = useToast();
 
   const handleUpload = (type: 'camera' | 'file') => {
+    const fileName = type === 'camera' ? 'Camera Photo.jpg' : 'Medical Document.pdf';
+    
+    setUploadProgress({
+      isVisible: true,
+      progress: 0,
+      status: 'uploading',
+      fileName
+    });
+
+    // Simulate upload progress
+    let progress = 0;
+    const uploadInterval = setInterval(() => {
+      progress += Math.random() * 15 + 5;
+      if (progress >= 100) {
+        clearInterval(uploadInterval);
+        setUploadProgress(prev => ({ ...prev, progress: 100, status: 'processing' }));
+        
+        // Simulate processing
+        setTimeout(() => {
+          setUploadProgress(prev => ({ ...prev, status: 'complete' }));
+        }, 2000);
+      } else {
+        setUploadProgress(prev => ({ ...prev, progress: Math.min(progress, 100) }));
+      }
+    }, 200);
+  };
+
+  const handleUploadClose = () => {
+    setUploadProgress(prev => ({ ...prev, isVisible: false }));
+    
+    // Simulate adding new document to the list
     toast({
-      title: type === 'camera' ? "Opening Camera" : "File Upload",
-      description: type === 'camera' 
-        ? "Camera functionality will be available in the full version." 
-        : "File upload functionality will be available in the full version.",
+      title: "Document Added",
+      description: "Your medical document has been successfully added to your vault.",
     });
   };
 
@@ -99,7 +138,7 @@ export const Dashboard = () => {
             
             <button className="medical-button-secondary px-4 py-3 flex items-center gap-2">
               <Calendar className="w-4 h-4" />
-              <span className="hidden sm:inline">Timeline</span>
+              <a href="/timeline" className="hidden sm:inline">Timeline</a>
             </button>
           </div>
         </div>
@@ -143,6 +182,27 @@ export const Dashboard = () => {
         <div className="fixed bottom-6 right-6 z-50">
           <UploadButton onUpload={handleUpload} />
         </div>
+
+        {/* Chat Button - Fixed positioned */}
+        <ChatButton 
+          onClick={() => setIsChatOpen(true)} 
+          hasUnread={false}
+        />
+
+        {/* Chat Interface */}
+        <Chat 
+          isOpen={isChatOpen} 
+          onClose={() => setIsChatOpen(false)} 
+        />
+
+        {/* Upload Progress Overlay */}
+        <UploadProgress
+          isVisible={uploadProgress.isVisible}
+          progress={uploadProgress.progress}
+          status={uploadProgress.status}
+          fileName={uploadProgress.fileName}
+          onClose={handleUploadClose}
+        />
       </div>
     </div>
   );

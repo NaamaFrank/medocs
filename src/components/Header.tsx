@@ -1,10 +1,13 @@
-import { Menu, Bell, User } from "lucide-react";
+import { Menu, Bell, User, Clock, Home } from "lucide-react";
+import { useLocation } from "react-router-dom";
 
 interface HeaderProps {
   userName?: string;
 }
 
 export const Header = ({ userName = "User" }: HeaderProps) => {
+  const location = useLocation();
+  
   return (
     <header className="sticky top-0 z-50 w-full bg-background/80 backdrop-blur-md border-b border-border">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
@@ -19,6 +22,32 @@ export const Header = ({ userName = "User" }: HeaderProps) => {
             </h1>
             <p className="text-sm text-muted-foreground">Your Medical Vault</p>
           </div>
+        </div>
+
+        {/* Navigation */}
+        <div className="hidden md:flex items-center gap-2">
+          <a
+            href="/"
+            className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-colors text-sm font-medium ${
+              location.pathname === '/' 
+                ? 'bg-primary text-primary-foreground' 
+                : 'text-muted-foreground hover:text-foreground hover:bg-muted'
+            }`}
+          >
+            <Home className="w-4 h-4" />
+            Dashboard
+          </a>
+          <a
+            href="/timeline"
+            className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-colors text-sm font-medium ${
+              location.pathname === '/timeline' 
+                ? 'bg-primary text-primary-foreground' 
+                : 'text-muted-foreground hover:text-foreground hover:bg-muted'
+            }`}
+          >
+            <Clock className="w-4 h-4" />
+            Timeline
+          </a>
         </div>
 
         <div className="flex items-center gap-3">
