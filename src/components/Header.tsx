@@ -1,4 +1,4 @@
-import { Menu, Bell, User, Clock, Home } from "lucide-react";
+import { Menu, Bell, User, Home } from "lucide-react";
 import { useLocation } from "react-router-dom";
 
 interface HeaderProps {
@@ -36,17 +36,6 @@ export const Header = ({ userName = "User" }: HeaderProps) => {
           >
             <Home className="w-4 h-4" />
             Dashboard
-          </a>
-          <a
-            href="/timeline"
-            className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-colors text-sm font-medium ${
-              location.pathname === '/timeline' 
-                ? 'bg-primary text-primary-foreground' 
-                : 'text-muted-foreground hover:text-foreground hover:bg-muted'
-            }`}
-          >
-            <Clock className="w-4 h-4" />
-            Timeline
           </a>
         </div>
 

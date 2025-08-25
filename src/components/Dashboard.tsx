@@ -5,7 +5,9 @@ import { ChatButton } from "./ChatButton";
 import { Chat } from "./Chat";
 import { UploadProgress } from "./UploadProgress";
 import { PDFExportDialog } from "./PDFExportDialog";
-import { Search, Filter, Calendar, Download, SortAsc, SortDesc } from "lucide-react";
+import { ViewToggle } from "./ViewToggle";
+import { TimelineView } from "./TimelineView";
+import { Search, Filter, Download, SortAsc, SortDesc } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
@@ -46,6 +48,7 @@ export const Dashboard = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isPDFDialogOpen, setIsPDFDialogOpen] = useState(false);
+  const [view, setView] = useState<'list' | 'timeline'>('list');
   const [sortBy, setSortBy] = useState<'date' | 'title' | 'doctor'>('date');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
   const [filterType, setFilterType] = useState<'all' | 'lab' | 'prescription' | 'report' | 'scan'>('all');
@@ -154,16 +157,20 @@ export const Dashboard = () => {
 
       <div className="container mx-auto px-4 py-6">
         {/* Search and Filter Section */}
-        <div className="flex flex-col sm:flex-row gap-4 mb-6">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-            <input
-              type="text"
-              placeholder="Search documents or doctors..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 bg-card border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-300"
-            />
+        <div className="flex flex-col gap-4 mb-6">
+          <div className="flex flex-col sm:flex-row gap-4">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+              <input
+                type="text"
+                placeholder="Search documents or doctors..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-10 pr-4 py-3 bg-card border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-300"
+              />
+            </div>
+            
+            <ViewToggle view={view} onViewChange={setView} />
           </div>
 
           <div className="flex gap-2">
@@ -222,50 +229,51 @@ export const Dashboard = () => {
               <span className="hidden sm:inline">Export</span>
             </Button>
             
-            <Button 
-              variant="outline" 
-              className="px-4 py-3 flex items-center gap-2"
-              onClick={() => window.location.href = '/timeline'}
-            >
-              <Calendar className="w-4 h-4" />
-              <span className="hidden sm:inline">Timeline</span>
-            </Button>
           </div>
         </div>
 
-        {/* Recent Documents */}
+        {/* Documents Section */}
         <div className="mb-8">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-foreground">Recent Documents</h3>
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-lg font-semibold text-foreground">
+              {view === 'timeline' ? 'Medical Timeline' : 'Recent Documents'}
+            </h3>
             <span className="text-sm text-muted-foreground">{filteredAndSortedDocuments.length} documents</span>
           </div>
 
-          <div className="space-y-3">
-            {filteredAndSortedDocuments.length > 0 ? (
-              filteredAndSortedDocuments.map((doc, index) => (
-                <div 
-                  key={doc.id} 
-                  className="animate-fade-in" 
-                  style={{ animationDelay: `${index * 0.1}s` }}
-                >
-                  <DocumentCard
-                    title={doc.title}
-                    doctor={doc.doctor}
-                    date={doc.date}
-                    type={doc.type}
-                    onClick={() => handleDocumentClick(doc.id)}
-                  />
+          {view === 'list' ? (
+            <div className="space-y-3">
+              {filteredAndSortedDocuments.length > 0 ? (
+                filteredAndSortedDocuments.map((doc, index) => (
+                  <div 
+                    key={doc.id} 
+                    className="animate-fade-in" 
+                    style={{ animationDelay: `${index * 0.1}s` }}
+                  >
+                    <DocumentCard
+                      title={doc.title}
+                      doctor={doc.doctor}
+                      date={doc.date}
+                      type={doc.type}
+                      onClick={() => handleDocumentClick(doc.id)}
+                    />
+                  </div>
+                ))
+              ) : (
+                <div className="text-center py-12">
+                  <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Search className="w-8 h-8 text-muted-foreground" />
+                  </div>
+                  <p className="text-muted-foreground">No documents found matching your search.</p>
                 </div>
-              ))
-            ) : (
-              <div className="text-center py-12">
-                <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Search className="w-8 h-8 text-muted-foreground" />
-                </div>
-                <p className="text-muted-foreground">No documents found matching your search.</p>
-              </div>
-            )}
-          </div>
+              )}
+            </div>
+          ) : (
+            <TimelineView 
+              documents={filteredAndSortedDocuments}
+              onDocumentClick={handleDocumentClick}
+            />
+          )}
         </div>
 
         {/* Upload Button - Fixed positioned */}
