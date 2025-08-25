@@ -4,8 +4,11 @@ import { UploadButton } from "./UploadButton";
 import { ChatButton } from "./ChatButton";
 import { Chat } from "./Chat";
 import { UploadProgress } from "./UploadProgress";
-import { Search, Filter, Calendar } from "lucide-react";
+import { PDFExportDialog } from "./PDFExportDialog";
+import { Search, Filter, Calendar, Download, SortAsc, SortDesc } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
 
 // Mock data for demonstration
 const mockDocuments = [
@@ -42,6 +45,10 @@ const mockDocuments = [
 export const Dashboard = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [isPDFDialogOpen, setIsPDFDialogOpen] = useState(false);
+  const [sortBy, setSortBy] = useState<'date' | 'title' | 'doctor'>('date');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
+  const [filterType, setFilterType] = useState<'all' | 'lab' | 'prescription' | 'report' | 'scan'>('all');
   const [uploadProgress, setUploadProgress] = useState({
     isVisible: false,
     progress: 0,
@@ -95,10 +102,39 @@ export const Dashboard = () => {
     });
   };
 
-  const filteredDocuments = mockDocuments.filter(doc =>
-    doc.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    doc.doctor.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const handleSort = (newSortBy: 'date' | 'title' | 'doctor') => {
+    if (sortBy === newSortBy) {
+      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortBy(newSortBy);
+      setSortOrder('asc');
+    }
+  };
+
+  const filteredAndSortedDocuments = mockDocuments
+    .filter(doc => {
+      const matchesSearch = doc.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        doc.doctor.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesFilter = filterType === 'all' || doc.type === filterType;
+      return matchesSearch && matchesFilter;
+    })
+    .sort((a, b) => {
+      let comparison = 0;
+      
+      switch (sortBy) {
+        case 'date':
+          comparison = new Date(a.date).getTime() - new Date(b.date).getTime();
+          break;
+        case 'title':
+          comparison = a.title.localeCompare(b.title);
+          break;
+        case 'doctor':
+          comparison = a.doctor.localeCompare(b.doctor);
+          break;
+      }
+      
+      return sortOrder === 'asc' ? comparison : -comparison;
+    });
 
   return (
     <div className="min-h-screen bg-background">
@@ -131,15 +167,69 @@ export const Dashboard = () => {
           </div>
 
           <div className="flex gap-2">
-            <button className="medical-button-secondary px-4 py-3 flex items-center gap-2">
-              <Filter className="w-4 h-4" />
-              <span className="hidden sm:inline">Filter</span>
-            </button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" className="px-4 py-3 flex items-center gap-2">
+                  <Filter className="w-4 h-4" />
+                  <span className="hidden sm:inline">Filter</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-40">
+                <DropdownMenuItem onClick={() => setFilterType('all')}>
+                  All Types
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setFilterType('lab')}>
+                  Lab Results
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setFilterType('prescription')}>
+                  Prescriptions
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setFilterType('report')}>
+                  Reports
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setFilterType('scan')}>
+                  Scans
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" className="px-4 py-3 flex items-center gap-2">
+                  {sortOrder === 'asc' ? <SortAsc className="w-4 h-4" /> : <SortDesc className="w-4 h-4" />}
+                  <span className="hidden sm:inline">Sort</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-40">
+                <DropdownMenuItem onClick={() => handleSort('date')}>
+                  By Date {sortBy === 'date' && (sortOrder === 'asc' ? '↑' : '↓')}
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleSort('title')}>
+                  By Title {sortBy === 'title' && (sortOrder === 'asc' ? '↑' : '↓')}
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleSort('doctor')}>
+                  By Doctor {sortBy === 'doctor' && (sortOrder === 'asc' ? '↑' : '↓')}
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
             
-            <button className="medical-button-secondary px-4 py-3 flex items-center gap-2">
+            <Button 
+              variant="outline" 
+              className="px-4 py-3 flex items-center gap-2"
+              onClick={() => setIsPDFDialogOpen(true)}
+            >
+              <Download className="w-4 h-4" />
+              <span className="hidden sm:inline">Export</span>
+            </Button>
+            
+            <Button 
+              variant="outline" 
+              className="px-4 py-3 flex items-center gap-2"
+              onClick={() => window.location.href = '/timeline'}
+            >
               <Calendar className="w-4 h-4" />
-              <a href="/timeline" className="hidden sm:inline">Timeline</a>
-            </button>
+              <span className="hidden sm:inline">Timeline</span>
+            </Button>
           </div>
         </div>
 
@@ -147,12 +237,12 @@ export const Dashboard = () => {
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold text-foreground">Recent Documents</h3>
-            <span className="text-sm text-muted-foreground">{filteredDocuments.length} documents</span>
+            <span className="text-sm text-muted-foreground">{filteredAndSortedDocuments.length} documents</span>
           </div>
 
           <div className="space-y-3">
-            {filteredDocuments.length > 0 ? (
-              filteredDocuments.map((doc, index) => (
+            {filteredAndSortedDocuments.length > 0 ? (
+              filteredAndSortedDocuments.map((doc, index) => (
                 <div 
                   key={doc.id} 
                   className="animate-fade-in" 
@@ -202,6 +292,13 @@ export const Dashboard = () => {
           status={uploadProgress.status}
           fileName={uploadProgress.fileName}
           onClose={handleUploadClose}
+        />
+
+        {/* PDF Export Dialog */}
+        <PDFExportDialog
+          isOpen={isPDFDialogOpen}
+          onClose={() => setIsPDFDialogOpen(false)}
+          documents={mockDocuments}
         />
       </div>
     </div>
