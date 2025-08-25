@@ -6,7 +6,7 @@ import { Chat } from "./Chat";
 import { UploadProgress } from "./UploadProgress";
 import { PDFExportDialog } from "./PDFExportDialog";
 import { ViewToggle } from "./ViewToggle";
-import { TimelineView } from "./TimelineView";
+import { TimelineDrillView } from "./TimelineDrillView";
 import { Search, Filter, Download, SortAsc, SortDesc } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -18,28 +18,70 @@ const mockDocuments = [
     id: "1",
     title: "Blood Test Results",
     doctor: "Dr. Sarah Johnson",
-    date: "Dec 15, 2024",
+    date: "2024-12-15",
     type: "lab" as const,
   },
   {
     id: "2", 
     title: "Prescription - Amoxicillin",
     doctor: "Dr. Michael Chen",
-    date: "Dec 12, 2024",
+    date: "2024-12-12",
     type: "prescription" as const,
   },
   {
     id: "3",
     title: "Annual Physical Report",
     doctor: "Dr. Sarah Johnson", 
-    date: "Dec 10, 2024",
+    date: "2024-12-10",
     type: "report" as const,
   },
   {
     id: "4",
     title: "Chest X-Ray Scan",
     doctor: "Dr. Robert Kim",
-    date: "Dec 8, 2024", 
+    date: "2024-12-08", 
+    type: "scan" as const,
+  },
+  {
+    id: "5",
+    title: "Cholesterol Panel",
+    doctor: "Dr. Sarah Johnson",
+    date: "2024-11-22",
+    type: "lab" as const,
+  },
+  {
+    id: "6",
+    title: "MRI Brain Scan",
+    doctor: "Dr. Jennifer Lee",
+    date: "2024-11-15",
+    type: "scan" as const,
+  },
+  {
+    id: "7",
+    title: "Prescription - Lisinopril",
+    doctor: "Dr. Michael Chen",
+    date: "2024-11-08",
+    type: "prescription" as const,
+  },
+  {
+    id: "8",
+    title: "Cardiology Consultation Report",
+    doctor: "Dr. William Brown",
+    date: "2024-10-25",
+    type: "report" as const,
+  },
+  {
+    id: "9",
+    title: "Thyroid Function Test",
+    doctor: "Dr. Sarah Johnson",
+    date: "2024-10-18",
+    type: "lab" as const,
+  },
+  {
+    id: "10",
+    title: "Ultrasound Abdomen",
+    doctor: "Dr. Robert Kim",
+    date: "2024-09-30",
     type: "scan" as const,
   },
 ];
@@ -269,7 +311,7 @@ export const Dashboard = () => {
               )}
             </div>
           ) : (
-            <TimelineView 
+            <TimelineDrillView 
               documents={filteredAndSortedDocuments}
               onDocumentClick={handleDocumentClick}
             />

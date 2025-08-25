@@ -1,4 +1,5 @@
 import { FileText, Calendar, User, ChevronRight } from "lucide-react";
+import { format } from "date-fns";
 
 interface DocumentCardProps {
   title: string;
@@ -40,6 +41,8 @@ const getTypeColor = (type: DocumentCardProps["type"]) => {
 };
 
 export const DocumentCard = ({ title, doctor, date, type, onClick }: DocumentCardProps) => {
+  const formattedDate = format(new Date(date), 'MMM d, yyyy');
+  
   return (
     <div 
       className="document-card animate-fade-in cursor-pointer group"
@@ -62,7 +65,7 @@ export const DocumentCard = ({ title, doctor, date, type, onClick }: DocumentCar
             </div>
             <div className="flex items-center gap-1">
               <Calendar className="w-4 h-4" />
-              <span>{date}</span>
+              <span>{formattedDate}</span>
             </div>
           </div>
         </div>
