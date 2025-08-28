@@ -82,7 +82,7 @@ export const TimelineDocumentItem = ({ doc, index, onDocumentClick }: TimelineDo
             <span className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-normal border transition-all duration-200 ${
               doc.type === 'lab' ? 'bg-accent/10 text-accent-active border-accent/30' :
               doc.type === 'prescription' ? 'bg-secondary/10 text-secondary-accent border-secondary/30' :
-              doc.type === 'report' ? 'bg-primary/10 text-primary/80 border-primary/20' :
+              doc.type === 'report' ? 'bg-primary/5 text-primary border-primary/20' :
               'bg-primary-light/10 text-primary-hover border-primary-light/30'
             }`}>
               {getTypeLabel(doc.type)}
