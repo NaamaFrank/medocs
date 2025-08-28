@@ -66,11 +66,11 @@ export const TimelineGroupItem = ({ group, index, onDrillDown }: TimelineGroupIt
               return (
                 <span 
                   key={type} 
-                  className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200 ${
-                    type === 'lab' ? 'bg-accent/20 text-accent-active border border-accent/30' :
-                    type === 'prescription' ? 'bg-secondary/20 text-secondary-accent border border-secondary/30' :
-                    type === 'report' ? 'bg-primary/10 text-primary border border-primary/20' :
-                    'bg-primary-light/20 text-primary-hover border border-primary-light/30'
+                  className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-normal transition-all duration-200 ${
+                    type === 'lab' ? 'bg-accent/10 text-accent-active border border-accent/30' :
+                    type === 'prescription' ? 'bg-secondary/10 text-secondary-accent border border-secondary/30' :
+                    type === 'report' ? 'bg-primary/5 text-primary border border-primary/20' :
+                    'bg-primary-light/10 text-primary-hover border border-primary-light/30'
                   }`}
                 >
                   {count} {getTypeLabel(type).toLowerCase()}{count !== 1 ? 's' : ''}
