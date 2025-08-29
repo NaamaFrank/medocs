@@ -69,7 +69,7 @@ export const TimelineGroupItem = ({ group, index, onDrillDown }: TimelineGroupIt
                   className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-normal transition-all duration-200 ${
                     type === 'lab' ? 'bg-accent/10 text-accent-active border border-accent/30' :
                     type === 'prescription' ? 'bg-secondary/10 text-secondary-accent border border-secondary/30' :
-                    type === 'report' ? 'bg-primary/5 text-primary border border-primary/10' :
+                    type === 'report' ? 'bg-primary/10 text-primary border border-primary/30' :
                     'bg-primary-light/10 text-primary-hover border border-primary-light/30'
                   }`}
                 >
