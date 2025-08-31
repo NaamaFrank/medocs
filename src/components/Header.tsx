@@ -1,5 +1,6 @@
-import { Menu, Bell, User, Home } from "lucide-react";
+import { Bell, User } from "lucide-react";
 import { useLocation } from "react-router-dom";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 
 interface HeaderProps {
   userName?: string;
@@ -8,35 +9,29 @@ interface HeaderProps {
 export const Header = ({ userName = "User" }: HeaderProps) => {
   const location = useLocation();
   
+  const getPageTitle = () => {
+    switch (location.pathname) {
+      case '/documents':
+        return 'Documents';
+      case '/timeline':
+        return 'Timeline';
+      default:
+        return 'Medical Vault';
+    }
+  };
+  
   return (
     <header className="sticky top-0 z-50 w-full bg-background/80 backdrop-blur-md border-b border-border">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <button className="lg:hidden p-2 rounded-lg hover:bg-muted transition-colors">
-            <Menu className="w-5 h-5" />
-          </button>
+          <SidebarTrigger className="p-2 rounded-lg hover:bg-muted transition-colors" />
           
           <div>
             <h1 className="font-semibold text-xl bg-gradient-to-r from-primary to-accent-active bg-clip-text text-transparent">
-              Medocs
+              {getPageTitle()}
             </h1>
             <p className="text-sm text-muted-foreground">Your Medical Vault</p>
           </div>
-        </div>
-
-        {/* Navigation */}
-        <div className="hidden md:flex items-center gap-2">
-          <a
-            href="/"
-            className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-colors text-sm font-medium ${
-              location.pathname === '/' 
-                ? 'bg-primary text-primary-foreground' 
-                : 'text-muted-foreground hover:text-foreground hover:bg-muted'
-            }`}
-          >
-            <Home className="w-4 h-4" />
-            Dashboard
-          </a>
         </div>
 
         <div className="flex items-center gap-3">

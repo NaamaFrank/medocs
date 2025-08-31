@@ -1,13 +1,8 @@
-import { Header } from "@/components/Header";
-import { Dashboard } from "@/components/Dashboard";
+import { Navigate } from "react-router-dom";
 
 const Index = () => {
-  return (
-    <div className="min-h-screen bg-background">
-      <Header userName="Sarah" />
-      <Dashboard />
-    </div>
-  );
+  // Redirect to documents page as the default view
+  return <Navigate to="/documents" replace />;
 };
 
 export default Index;
