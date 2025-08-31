@@ -1,6 +1,7 @@
 import { FileText, Stethoscope, Pill, Activity } from "lucide-react";
 import { format } from "date-fns";
 import type { Document } from "@/types/timeline";
+import { TYPE_TAG_STYLES } from "@/lib/utils";
 
 interface TimelineDocumentItemProps {
   doc: Document;
@@ -60,7 +61,7 @@ export const TimelineDocumentItem = ({ doc, index, onDocumentClick }: TimelineDo
               <h3 className="font-semibold text-foreground text-lg group-hover:text-primary transition-colors duration-200 truncate">
                 {doc.title}
               </h3>
-              <p className="text-sm text-muted-foreground mt-1">
+              <p className={`text-sm text-muted-foreground mt-1 ${TYPE_TAG_STYLES[doc.type] || TYPE_TAG_STYLES.default}`}>
                 {getTypeLabel(doc.type)}
               </p>
             </div>
@@ -79,12 +80,11 @@ export const TimelineDocumentItem = ({ doc, index, onDocumentClick }: TimelineDo
           </div>
           
           <div className="flex items-center gap-2">
-            <span className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-normal border transition-all duration-200 ${
-              doc.type === 'lab' ? 'bg-accent/10 text-accent-active border-accent/30' :
-              doc.type === 'prescription' ? 'bg-secondary/10 text-secondary-accent border-secondary/30' :
-              doc.type === 'report' ? 'bg-primary/5 text-primary border-primary/20' :
-              'bg-primary-light/10 text-primary-hover border-primary-light/30'
-            }`}>
+            <span
+              className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-normal border transition-all duration-200 ${
+                TYPE_TAG_STYLES[doc.type] || TYPE_TAG_STYLES.default
+              }`}
+            >
               {getTypeLabel(doc.type)}
             </span>
           </div>

@@ -1,5 +1,6 @@
 import { FileText, Calendar, User, ChevronRight } from "lucide-react";
 import { format } from "date-fns";
+import { TYPE_TAG_STYLES, getTypeLabel } from "@/lib/utils";
 
 interface DocumentCardProps {
   title: string;

@@ -1,5 +1,6 @@
 import { FolderOpen, ChevronRight } from "lucide-react";
 import type { TimelineGroup } from "@/types/timeline";
+import { TYPE_TAG_STYLES } from "@/lib/utils";
 
 interface TimelineGroupItemProps {
   group: TimelineGroup;
@@ -57,8 +58,8 @@ export const TimelineGroupItem = ({ group, index, onDrillDown }: TimelineGroupIt
               <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all duration-200" />
             </div>
           </div>
-          
-          {/* Document type breakdown with improved styling */}
+
+          {/* Document type breakdown */}
           <div className="flex flex-wrap gap-2">
             {['lab', 'prescription', 'report', 'scan'].map(type => {
               const count = group.documents.filter(doc => doc.type === type).length;
@@ -66,12 +67,7 @@ export const TimelineGroupItem = ({ group, index, onDrillDown }: TimelineGroupIt
               return (
                 <span 
                   key={type} 
-                  className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-normal transition-all duration-200 ${
-                    type === 'lab' ? 'bg-accent/10 text-accent-active border border-accent/30' :
-                    type === 'prescription' ? 'bg-secondary/10 text-secondary-accent border border-secondary/30' :
-                    type === 'report' ? 'bg-primary/10 text-primary border border-primary/30' :
-                    'bg-primary-light/10 text-primary-hover border border-primary-light/30'
-                  }`}
+                  className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-normal transition-all duration-200 ${TYPE_TAG_STYLES[type]}`}
                 >
                   {count} {getTypeLabel(type).toLowerCase()}{count !== 1 ? 's' : ''}
                 </span>
