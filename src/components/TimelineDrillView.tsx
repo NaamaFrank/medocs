@@ -47,7 +47,7 @@ export const TimelineDrillView = ({ documents, onDocumentClick, isLoading = fals
             />
           ))}
 
-          {/* Individual Documents View with improved styling */}
+          {/* Individual Documents View*/}
           {individualDocs.map((doc, index) => (
             <TimelineDocumentItem
               key={doc.id}
