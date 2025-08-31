@@ -36,9 +36,6 @@ export const TimelineDocumentItem = ({ doc, index, onDocumentClick }: TimelineDo
               <h3 className="font-semibold text-foreground text-lg group-hover:text-primary transition-colors duration-200 truncate">
                 {doc.title}
               </h3>
-              <p className={`text-sm text-muted-foreground mt-1 ${TYPE_TAG_STYLES[doc.type] || TYPE_TAG_STYLES.default}`}>
-                {getTypeLabel(doc.type)}
-              </p>
             </div>
             <div className="ml-4 text-right flex-shrink-0">
               <div className="text-sm font-medium text-foreground bg-muted/50 px-3 py-1 rounded-full">
@@ -56,7 +53,7 @@ export const TimelineDocumentItem = ({ doc, index, onDocumentClick }: TimelineDo
           
           <div className="flex items-center gap-2">
             <span
-              className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-normal border transition-all duration-200 ${
+              className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-normal transition-all duration-200 ${
                 TYPE_TAG_STYLES[doc.type] || TYPE_TAG_STYLES.default
               }`}
             >

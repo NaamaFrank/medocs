@@ -8,11 +8,11 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const TYPE_TAG_STYLES: Record<string, string> = {
-  lab: "bg-accent/10 text-accent-active border-accent/30",
-  prescription: "bg-secondary/10 text-secondary-accent border-secondary/30",
+  lab: "bg-accent bg-opacity-10 text-accent-active border-accent/30",
+  prescription: "bg-secondary bg-opacity-10 text-secondary-accent border-secondary/30",
   report: "bg-primary/10 text-primary border-primary/30",
-  scan: "bg-primary-light/10 text-primary-hover border-primary-light/30",
-  default: "bg-muted/10 text-muted-foreground border-muted/30",
+  scan: "bg-primary-light bg-opacity-10 text-primary-hover border-primary-light/30",
+  default: "bg-muted bg-opacity-10 text-muted-foreground border-muted/30",
 };
 
 export function getTypeLabel(type: string): string {
