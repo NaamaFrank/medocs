@@ -1,6 +1,6 @@
-import { FileText, Calendar, User, ChevronRight } from "lucide-react";
+import { Calendar, User, ChevronRight } from "lucide-react";
 import { format } from "date-fns";
-import { TYPE_TAG_STYLES, getTypeLabel } from "@/lib/utils";
+import { getTypeLabel, getDocumentIconForCard, getTypeColorForCard } from "@/lib/utils";
 
 interface DocumentCardProps {
   title: string;
@@ -9,37 +9,6 @@ interface DocumentCardProps {
   type: "lab" | "prescription" | "report" | "scan";
   onClick?: () => void;
 }
-
-const getTypeIcon = (type: DocumentCardProps["type"]) => {
-  const iconClass = "w-5 h-5 text-primary";
-  switch (type) {
-    case "lab":
-      return <FileText className={iconClass} />;
-    case "prescription":
-      return <FileText className={iconClass} />;
-    case "report":
-      return <FileText className={iconClass} />;
-    case "scan":
-      return <FileText className={iconClass} />;
-    default:
-      return <FileText className={iconClass} />;
-  }
-};
-
-const getTypeColor = (type: DocumentCardProps["type"]) => {
-  switch (type) {
-    case "lab":
-      return "bg-primary-light text-primary";
-    case "prescription":
-      return "bg-secondary text-secondary-accent";
-    case "report":
-      return "bg-accent text-accent-foreground";
-    case "scan":
-      return "bg-muted text-muted-foreground";
-    default:
-      return "bg-primary-light text-primary";
-  }
-};
 
 export const DocumentCard = ({ title, doctor, date, type, onClick }: DocumentCardProps) => {
   const formattedDate = format(new Date(date), 'MMM d, yyyy');
@@ -50,8 +19,8 @@ export const DocumentCard = ({ title, doctor, date, type, onClick }: DocumentCar
       onClick={onClick}
     >
       <div className="flex items-start gap-4">
-        <div className={`p-3 rounded-xl ${getTypeColor(type)} group-hover:scale-110 transition-transform duration-300`}>
-          {getTypeIcon(type)}
+        <div className={`p-3 rounded-xl ${getTypeColorForCard(type)} group-hover:scale-110 transition-transform duration-300`}>
+          {getDocumentIconForCard(type)}
         </div>
         
         <div className="flex-1 min-w-0">

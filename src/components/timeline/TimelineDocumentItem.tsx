@@ -1,38 +1,13 @@
-import { FileText, Stethoscope, Pill, Activity } from "lucide-react";
+import { Stethoscope } from "lucide-react";
 import { format } from "date-fns";
 import type { Document } from "@/types/timeline";
-import { TYPE_TAG_STYLES } from "@/lib/utils";
+import { TYPE_TAG_STYLES, getDocumentIcon, getTypeLabel } from "@/lib/utils";
 
 interface TimelineDocumentItemProps {
   doc: Document;
   index: number;
   onDocumentClick: (id: string) => void;
 }
-
-const getDocumentIcon = (type: string) => {
-  switch (type) {
-    case "lab":
-      return <Activity className="w-5 h-5 text-accent-active" />;
-    case "prescription":
-      return <Pill className="w-5 h-5 text-secondary-accent" />;
-    case "report":
-      return <FileText className="w-5 h-5 text-primary" />;
-    case "scan":
-      return <Stethoscope className="w-5 h-5 text-primary-hover" />;
-    default:
-      return <FileText className="w-5 h-5 text-muted-foreground" />;
-  }
-};
-
-const getTypeLabel = (type: string) => {
-  switch (type) {
-    case "lab": return "Lab Results";
-    case "prescription": return "Prescription";
-    case "report": return "Medical Report";
-    case "scan": return "Medical Scan";
-    default: return "Document";
-  }
-};
 
 export const TimelineDocumentItem = ({ doc, index, onDocumentClick }: TimelineDocumentItemProps) => {
   return (

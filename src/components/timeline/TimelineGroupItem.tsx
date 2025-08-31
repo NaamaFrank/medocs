@@ -1,22 +1,12 @@
 import { FolderOpen, ChevronRight } from "lucide-react";
 import type { TimelineGroup } from "@/types/timeline";
-import { TYPE_TAG_STYLES } from "@/lib/utils";
+import { TYPE_TAG_STYLES, getTypeLabel } from "@/lib/utils";
 
 interface TimelineGroupItemProps {
   group: TimelineGroup;
   index: number;
   onDrillDown: (group: TimelineGroup) => void;
 }
-
-const getTypeLabel = (type: string) => {
-  switch (type) {
-    case "lab": return "Lab Results";
-    case "prescription": return "Prescription";
-    case "report": return "Medical Report";
-    case "scan": return "Medical Scan";
-    default: return "Document";
-  }
-};
 
 export const TimelineGroupItem = ({ group, index, onDrillDown }: TimelineGroupItemProps) => {
   return (
