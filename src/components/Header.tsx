@@ -18,7 +18,7 @@ export const Header = ({ userName = "User" }: HeaderProps) => {
           
           <div>
             <h1 className="font-semibold text-xl bg-gradient-to-r from-primary to-accent-active bg-clip-text text-transparent">
-              MediScribe
+              Medocs
             </h1>
             <p className="text-sm text-muted-foreground">Your Medical Vault</p>
           </div>

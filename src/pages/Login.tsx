@@ -16,7 +16,7 @@ export const Login = () => {
       title: isLogin ? "Login Successful" : "Account Created",
       description: isLogin 
         ? "Welcome back! Redirecting to your medical vault..." 
-        : "Welcome to MediScribe! Redirecting to your dashboard...",
+        : "Welcome to Medocs! Redirecting to your dashboard...",
     });
 
     // In a real app, this would handle authentication
@@ -34,7 +34,7 @@ export const Login = () => {
             <Heart className="w-8 h-8 text-primary-foreground" />
           </div>
           <h1 className="text-2xl font-semibold text-foreground mb-2">
-            Welcome to MediScribe
+            Welcome to Medocs
           </h1>
           <p className="text-muted-foreground">
             Your secure medical document vault
