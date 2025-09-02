@@ -3,11 +3,14 @@ import { useToast } from "@/hooks/use-toast";
 import { mockDocuments } from "@/lib/documents";
 import { DocumentsToolbar } from "@/components/DocumentsToolbar";
 import { TimelineDrillView } from "@/components/TimelineDrillView";
+import { HorizontalTimelineView } from "@/components/timeline/HorizontalTimelineView";
+import { TimelineControls } from "@/components/timeline/TimelineControls";
 import { UploadButton } from "@/components/UploadButton";
 import { ChatButton } from "@/components/ChatButton";
 import { Chat } from "@/components/Chat";
 import { UploadProgress } from "@/components/UploadProgress";
 import { PDFExportDialog } from "@/components/PDFExportDialog";
+import type { TimelineZoom } from "@/lib/timelineUtils";
 
 export const Timeline = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -16,6 +19,8 @@ export const Timeline = () => {
   const [sortBy, setSortBy] = useState<'date' | 'title' | 'doctor'>('date');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
   const [filterType, setFilterType] = useState<'all' | 'lab' | 'prescription' | 'report' | 'scan'>('all');
+  const [viewMode, setViewMode] = useState<'horizontal' | 'vertical'>('horizontal');
+  const [timelineZoom, setTimelineZoom] = useState<TimelineZoom>('month');
   const [uploadProgress, setUploadProgress] = useState({
     isVisible: false,
     progress: 0,
@@ -113,15 +118,27 @@ export const Timeline = () => {
         onExport={() => setIsPDFDialogOpen(true)}
       />
 
-      <div className="mb-8">
-        <div className="flex items-center justify-end mb-6">
-          <span className="text-sm text-muted-foreground">{filteredAndSortedDocuments.length} documents</span>
-        </div>
-
-        <TimelineDrillView 
-          documents={filteredAndSortedDocuments}
-          onDocumentClick={handleDocumentClick}
+      <div className="mb-8 space-y-6">
+        <TimelineControls
+          currentZoom={timelineZoom}
+          onZoomChange={setTimelineZoom}
+          viewMode={viewMode}
+          onViewModeChange={setViewMode}
+          totalDocuments={filteredAndSortedDocuments.length}
         />
+
+        {viewMode === 'horizontal' ? (
+          <HorizontalTimelineView 
+            documents={filteredAndSortedDocuments}
+            zoom={timelineZoom}
+            onDocumentClick={handleDocumentClick}
+          />
+        ) : (
+          <TimelineDrillView 
+            documents={filteredAndSortedDocuments}
+            onDocumentClick={handleDocumentClick}
+          />
+        )}
       </div>
 
       {/* Fixed positioned elements */}
