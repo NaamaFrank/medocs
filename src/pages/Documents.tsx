@@ -115,10 +115,7 @@ export const Documents = () => {
       />
 
       <div className="mb-8">
-        <div className="flex items-center justify-between mb-6">
-          <h3 className="text-lg font-semibold text-foreground">
-            Recent Documents
-          </h3>
+        <div className="flex items-center justify-end mb-6">
           <span className="text-sm text-muted-foreground">{filteredAndSortedDocuments.length} documents</span>
         </div>
 
