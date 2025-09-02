@@ -12,7 +12,7 @@ export const Header = ({ userName = "User" }: HeaderProps) => {
         <div className="flex items-center gap-6">
           <div>
             <h1 className="font-semibold text-xl bg-gradient-to-r from-primary to-accent-active bg-clip-text text-transparent">
-              Medical Vault
+              Medocs
             </h1>
             <p className="text-sm text-muted-foreground">Your Medical Vault</p>
           </div>
