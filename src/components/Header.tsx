@@ -1,26 +1,23 @@
 import { Bell, User } from "lucide-react";
-import { useLocation } from "react-router-dom";
-import { SidebarTrigger } from "@/components/ui/sidebar";
+import { Navigation } from "./Navigation";
 
 interface HeaderProps {
   userName?: string;
 }
 
 export const Header = ({ userName = "User" }: HeaderProps) => {
-  const location = useLocation();
-  
   return (
     <header className="sticky top-0 z-50 w-full bg-background/80 backdrop-blur-md border-b border-border">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <SidebarTrigger className="p-2 rounded-lg hover:bg-muted transition-colors" />
-          
+        <div className="flex items-center gap-6">
           <div>
             <h1 className="font-semibold text-xl bg-gradient-to-r from-primary to-accent-active bg-clip-text text-transparent">
               Medical Vault
             </h1>
             <p className="text-sm text-muted-foreground">Your Medical Vault</p>
           </div>
+          
+          <Navigation />
         </div>
 
         <div className="flex items-center gap-3">
