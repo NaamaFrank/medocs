@@ -9,17 +9,6 @@ interface HeaderProps {
 export const Header = ({ userName = "User" }: HeaderProps) => {
   const location = useLocation();
   
-  const getPageTitle = () => {
-    switch (location.pathname) {
-      case '/documents':
-        return 'Documents';
-      case '/timeline':
-        return 'Timeline';
-      default:
-        return 'Medical Vault';
-    }
-  };
-  
   return (
     <header className="sticky top-0 z-50 w-full bg-background/80 backdrop-blur-md border-b border-border">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
@@ -28,7 +17,7 @@ export const Header = ({ userName = "User" }: HeaderProps) => {
           
           <div>
             <h1 className="font-semibold text-xl bg-gradient-to-r from-primary to-accent-active bg-clip-text text-transparent">
-              {getPageTitle()}
+              Medical Vault
             </h1>
             <p className="text-sm text-muted-foreground">Your Medical Vault</p>
           </div>
